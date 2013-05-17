@@ -1,0 +1,28 @@
+[color]
+	ui = auto
+[user]
+	email = fabian.schenkel@scs.ch
+[push]
+	default = tracking
+[branch]
+	autosetuprebase = always
+[gui]
+	spellingdictionary = none
+[color "diff"]
+	meta = magenta
+[diff]
+	renames = copies
+	guitool = meld
+[merge]
+	tool = meld4
+	conflictstyle = diff3
+[mergetool "meld4"]
+	cmd = /usr/scs/fschenkel/sandbox/meld-1.6.1/bin/meld --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $BASE $REMOTE $MERGED
+[cola]
+	fontdiff = DejaVu Sans Mono,12,-1,5,50,0,0,0,0,0
+[alias]
+	logk = log --graph --full-history --all --color --pretty=format:'%x1b[31m%h%x09%x1b[32m %C(white)- %C(yellow)%d%C(white)%x1b[0m%x20%s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --date=relative
+	diffword = diff --word-diff=color --word-diff-regex='[A-z_]+|[^[:space:]]'
+	sub = !git submodule
+[core]
+	whitespace = -trailing-space
