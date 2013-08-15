@@ -49,8 +49,8 @@ alias push="git stash && git pull --rebase && git push; git stash pop"
 alias pull="git stash && git pull --rebase; git stash pop"
 alias e="emacs -nw"
 alias emasc="emacs"
-function xilinx_env { . /opt/toolchain/xilinx/Xilinx14.5i/settings64.sh; TMP=${XILINX%//ISE}; TMP=${TMP##*/}; echo -en "\033]2;$TMP\007"; }
-alias x="xilinx_env"
+function xenv { . /opt/toolchain/xilinx/Xilinx${1}i/settings64.sh && echo -en "\033]2;Xilinx ${1}\007"; }
+alias x="xenv 14.5"
 alias m="export PATH=/opt/toolchain/modelsim/modelsim_dlx_10.0e/bin:${PATH}"
 #alias m="export PATH=/opt/toolchain/modelsim/modelsim_dlx_10.2a/bin:${PATH}"
 alias s="ssh-add"
