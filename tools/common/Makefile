@@ -16,7 +16,7 @@ OUTFILE  = $(shell basename `pwd`)
 DBG = ddd
 
 # Automagically find all source files, header files, and include directories
-SRC_C=$(shell find ${SRC_ROOT} -name *cpp -type f)
+SRC_C=$(shell find ${SRC_ROOT} \( -name *.c -o -name *.cpp \) -type f)
 SRC_H=$(shell find ${SRC_ROOT} -name *h -type f)
 DIR_H=$(sort ${foreach FILE_H,${SRC_H},$(dir ${FILE_H})})
 
