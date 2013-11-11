@@ -1,0 +1,18 @@
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+test -s ~/.alias && . ~/.alias || true
+
+source ~/settings/home/.bashrc_base
+
+# Source the SCS scripts (tool licensing)
+if [ -f /etc/scs-scripts/scs_settings.sh ]; then
+    source /etc/scs-scripts/scs_settings.sh
+fi
+
+# Set PS1 variable
+export PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+
+# Add new paths
+export PATH=$PATH:"/opt/toolchain/codecomposer/ccs_5.1.1/ccsv5/eclipse/"

@@ -1,14 +1,4 @@
 
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
-
-test -s ~/.alias && . ~/.alias || true
-
-# Source the SCS scripts (tool licensing)
-if [ -f /etc/scs-scripts/scs_settings.sh ]; then
-    source /etc/scs-scripts/scs_settings.sh
-fi
-
 # Prepare SSH-Agent
 SSHAGENT=/usr/bin/ssh-agent
 SSHAGENTARGS="-s -t10h"
@@ -23,9 +13,6 @@ fi
 #    IP=`dig +short bun-tschlin.scs-ad.scs.ch`
 #    export DISPLAY="${IP}:0.0"
 #fi
-
-# Set PS1 variable
-export PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 
 # Colourful ls output
 eval $(dircolors)
@@ -62,8 +49,6 @@ alias log="tail --retry --follow=name"
 alias tree="tree -C"
 alias gdiff="git diff --no-index"
 alias uncolor="sed -i -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'"
-# Add new paths
-export PATH=$PATH:"/opt/toolchain/codecomposer/ccs_5.1.1/ccsv5/eclipse/"
 
 # 256 colors for terminal
 export TERM="xterm-256color"
@@ -76,4 +61,3 @@ export LESS="-iRS"
 if [ -f /etc/bash_completion ]; then
  . /etc/bash_completion
 fi
-
