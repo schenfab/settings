@@ -133,6 +133,11 @@
 (global-set-key '[C-tab]       'swap-windows)
 (global-set-key '[backtab]     'switch-other)
 
+;; Easily switch buffer windows
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x <left>") 'windmove-left)
 
 (defvar act-search-string nil)
 
