@@ -1,7 +1,5 @@
 [color]
 	ui = auto
-[user]
-	email = fabian.schenkel@scs.ch
 [push]
 	default = tracking
 [branch]
@@ -17,7 +15,7 @@
 	tool = meld4
 	conflictstyle = diff3
 [mergetool "meld4"]
-	cmd = /usr/scs/fschenkel/sandbox/meld-1.6.1/bin/meld --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $BASE $REMOTE $MERGED
+	cmd = meld --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $BASE $REMOTE $MERGED
 [cola]
 	fontdiff = DejaVu Sans Mono,12,-1,5,50,0,0,0,0,0
 [alias]

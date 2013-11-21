@@ -4,7 +4,7 @@
 
 test -s ~/.alias && . ~/.alias || true
 
-source ~/settings/home/.bashrc_base
+source ~/settings/home/.bashrc_common
 
 # Source the SCS scripts (tool licensing)
 if [ -f /etc/scs-scripts/scs_settings.sh ]; then
@@ -13,6 +13,9 @@ fi
 
 # Set PS1 variable
 export PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+
+# Set email address to be used by git commit
+export EMAIL="fabian.schenkel@gmail.com"
 
 # Add new paths
 export PATH=$PATH:"/opt/toolchain/codecomposer/ccs_5.1.1/ccsv5/eclipse/"

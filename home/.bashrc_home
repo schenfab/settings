@@ -2,6 +2,10 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-PS1='[\u@\h \W]\$ '
+source ~/settings/home/.bashrc_common
 
-source ~/settings/home/.bashrc_base
+# Set PS1 variable
+PS1='[\u@\h \w]\$ '
+
+# Set email address to be used by git commit
+export EMAIL="fabian.schenkel@gmail.com"
