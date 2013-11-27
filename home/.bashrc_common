@@ -18,20 +18,49 @@ fi
 eval $(dircolors)
 LS_COLORS=$LS_COLORS":*.vhd=00;96:*.v=00;96:*.vp=00;96:*.vh=00;96:"
 
+# Favourite directory browsing functions
+FAVDIR_FILE="${HOME}/.favdirs"
+function favdir_goto
+{
+    # Check the argument
+    if [ ${1} == "" ]; then
+	echo "Error: Please provide a designator for the directory to go to!"
+	exit 1
+    fi
+
+    # Check if the designator exists and change there
+    grep -s "^${1}=" ${FAVDIR_FILE} > /dev/null
+    if [ $? -eq 0 ]; then
+	NEXTDIR=$(grep --color=never "^${1}=" ${FAVDIR_FILE})
+	NEXTDIR=${NEXTDIR#"${1}="}
+	cd ${NEXTDIR}
+    else
+	echo "Error: Either dirlist file ${FAVDIR_FILE} does not exists, or the required dirname ${1} was not found in the file!"
+    fi
+}
+
+function favdir_set
+{
+    # Check the argument
+    if [ ${1} == "" ]; then
+	echo "Error: Please provide a designator for the directory to go to!"
+	exit 1;
+    fi
+
+    # Store or overwrite the designator with the new directory
+    grep -s "^${1}=" ${FAVDIR_FILE} > /dev/null
+    if [ $? -eq 0 ]; then
+	sed -i "/^${1}=/d" ${FAVDIR_FILE}
+    fi
+    echo "${1}=$(pwd)" >> ${FAVDIR_FILE}
+}
+
 # Aliases for convenience
 alias ls='ls --color=auto'
 alias ll='ls -hl --time-style=long-iso'
 alias grep='grep --color=auto'
-export BASHRC_TB="/usr/scs/fschenkel/vhdl/vhdl-lib-env/tb/vhdl-lib/synth/axi/vhdl/tb_axi4_mc/scripts"
-export BASHRC_VHDL="/usr/scs/fschenkel/vhdl/vhdl-lib-env/vhdl-lib/synth/axi/vhdl"
-function goto_tb   { cd $BASHRC_TB; }
-function goto_vhdl { cd $BASHRC_VHDL; }
-function set_tb   { sed -i "s:export BASHRC_TB=\"${BASHRC_TB}\":export BASHRC_TB=\"$(pwd)\":g" ~/.bashrc; export BASHRC_TB=$(pwd); }
-function set_vhdl { sed -i "s:export BASHRC_VHDL=\"${BASHRC_VHDL}\":export BASHRC_VHDL=\"$(pwd)\":g" ~/.bashrc; export BASHRC_VHDL=$(pwd); }
-alias t="goto_tb"
-alias tt="set_tb"
-alias v="goto_vhdl"
-alias vv="set_vhdl"
+alias d="favdir_goto"
+alias r="favdir_set"
 alias push="git stash && git pull --rebase && git push; git stash pop"
 alias pull="git stash && git pull --rebase; git stash pop"
 alias e="emacs -nw"
