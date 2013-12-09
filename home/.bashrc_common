@@ -55,6 +55,13 @@ function favdir_set
     echo "${1}=$(pwd)" >> ${FAVDIR_FILE}
 }
 
+# Highlighting function
+function color
+{
+    grep * 2>&1
+    grep --color "${1}\|$"
+}
+
 # Aliases for convenience
 alias ls='ls --color=auto'
 alias ll='ls -hl --time-style=long-iso'
