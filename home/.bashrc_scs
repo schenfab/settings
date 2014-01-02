@@ -19,3 +19,18 @@ export EMAIL="fabian.schenkel@scs.ch"
 
 # Add new paths
 export PATH=$PATH:"/opt/toolchain/codecomposer/ccs_5.1.1/ccsv5/eclipse/"
+
+# Prepare SSH-Agent
+SSHAGENT=/usr/bin/ssh-agent
+SSHAGENTARGS="-s -t10h"
+if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
+    eval `$SSHAGENT $SSHAGENTARGS`
+    trap "kill $SSH_AGENT_PID" 0
+fi
+
+# Aliases for convenience
+alias s="ssh-add"
+alias tig="~/sandbox/tig-1.1/tig --all"
+function xenv { . /opt/toolchain/xilinx/Xilinx${1}i/settings64.sh && echo -en "\033]2;Xilinx ${1}\007"; }
+alias x="xenv 14.5"
+alias m="export PATH=/opt/toolchain/modelsim/modelsim_dlx_10.0e/bin:${PATH}"
