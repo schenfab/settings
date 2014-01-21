@@ -19,6 +19,7 @@ export EMAIL="fabian.schenkel@scs.ch"
 
 # Add new paths
 export PATH=$PATH:"/opt/toolchain/codecomposer/ccs_5.1.1/ccsv5/eclipse/"
+export PATH=$PATH:"/usr/scs/fschenkel/sandbox/insight/bin"
 
 # Prepare SSH-Agent
 SSHAGENT=/usr/bin/ssh-agent
