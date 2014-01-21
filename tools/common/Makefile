@@ -13,12 +13,13 @@ SRC_ROOT = .
 OUTFILE  = $(shell basename `pwd`)
 
 # Debugger settings
-DBG = ddd
+DBG = insight
 
-# Automagically find all source files, header files, and include directories
-SRC_C=$(shell find -L ${SRC_ROOT} \( -name '*.c' -o -name '*.cpp' \) -type f)
+# Automagically find all source files, header files, include directories, and object files
+SRC_C=$(shell find -L ${SRC_ROOT} -name '*.cpp' -type f)
 SRC_H=$(shell find -L ${SRC_ROOT} -name '*.h' -type f)
 DIR_H=$(sort ${foreach FILE_H,${SRC_H},$(dir ${FILE_H})})
+OBJ  =$(SRC_C:%.cpp=%.o)
 
 # Create the include and library strings
 INC_STR=$(addprefix -I,${INC} $(DIR_H))
@@ -28,8 +29,11 @@ LIB_STR=$(addprefix -l,$(LIBS))
 CFLAGS += $(RFLAGS)
 
 # Compile target (default)
-${OUTFILE}: ${SRC_C} ${SRC_H}
-	${CC} -o ${OUTFILE} ${CFLAGS} ${LIB_STR} ${INC_STR} ${SRC_C}
+${OUTFILE}: ${SRC_H} ${OBJ}
+	${CC} -o ${OUTFILE} ${CFLAGS} ${LIB_STR} ${INC_STR} ${OBJ}
+
+%.o: %.cpp ${SRC_H}
+	${CC} ${CFLAGS} ${INC_STR} -c $< -o $@
 
 # Execution target
 .PHONY: run
@@ -46,5 +50,5 @@ debug: clean ${OUTFILE}
 # Clean target
 .PHONY: clean
 clean:
-	rm -f ${OUTFILE}
+	rm -f ${OUTFILE} ${OBJ}
 
