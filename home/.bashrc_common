@@ -62,7 +62,7 @@ alias ssh="ssh"
 alias log="tail --retry --follow=name"
 alias tree="tree -C"
 alias gdiff="git diff --no-index"
-alias uncolor="sed -i -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'"
+alias uncolor="sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'"
 alias make="make -j $(grep -c processor /proc/cpuinfo)"
 
 # 256 colors for terminal
