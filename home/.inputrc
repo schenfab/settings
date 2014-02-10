@@ -31,5 +31,12 @@
 "\eOC": forward-word
 
 #
+# Use magic-space for history expansion (!nr <space>)
+#
+$if Bash
+    Space: magic-space
+$endif
+
+#
 # end
 #
