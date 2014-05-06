@@ -4,8 +4,5 @@
 
 source ~/settings/home/.bashrc_common
 
-# Set PS1 variable
-PS1='[\u@\h \w]\$ '
-
 # Set email address to be used by git commit
 export EMAIL="fabian.schenkel@gmail.com"

@@ -11,9 +11,6 @@ if [ -f /etc/scs-scripts/scs_settings.sh ]; then
     source /etc/scs-scripts/scs_settings.sh
 fi
 
-# Set PS1 variable
-export PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-
 # Set email address to be used by git commit
 export EMAIL="fabian.schenkel@scs.ch"
 

@@ -2,6 +2,9 @@
 eval $(dircolors)
 LS_COLORS=$LS_COLORS":*.vhd=00;93:*.v=00;93:*.vp=00;93:*.vh=00;93:*.ngc=00;33:"
 
+# Set PS1 variable
+export PS1='\[\u\]@\[\h\]:\[\w\]\[\$\] '
+
 # Favourite directory browsing functions
 FAVDIR_FILE="${HOME}/.favdirs"
 function favdir_goto
