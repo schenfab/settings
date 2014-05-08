@@ -49,6 +49,15 @@ function color
     grep --color "${1}\|$"
 }
 
+# Function to pipe into no-windowed emacs
+function ep
+{
+    TMP=$(mktemp)
+    cat > $TMP
+    eval "emacs -nw $TMP" < /dev/tty
+    rm $TMP
+}
+
 # Aliases for convenience
 alias ls='ls --color=auto'
 alias ll='ls -hl --time-style=long-iso'
