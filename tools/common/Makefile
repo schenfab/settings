@@ -29,10 +29,10 @@ LIB_STR=$(addprefix -l,$(LIBS))
 CFLAGS += $(RFLAGS)
 
 # Compile target (default)
-${OUTFILE}: ${SRC_H} ${OBJ}
+${OUTFILE}: ${SRC_H} ${OBJ} Makefile
 	${CC} -o ${OUTFILE} ${CFLAGS} ${LIB_STR} ${INC_STR} ${OBJ}
 
-%.o: %.cpp ${SRC_H}
+%.o: %.cpp ${SRC_H} Makefile
 	${CC} ${CFLAGS} ${INC_STR} -c $< -o $@
 
 # Execution target
