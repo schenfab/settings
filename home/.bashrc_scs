@@ -32,3 +32,4 @@ alias tig="~/sandbox/tig-1.1/tig --all"
 function xenv { . /opt/toolchain/xilinx/Xilinx${1}i/settings64.sh && echo -en "\033]2;Xilinx ${1}\007"; }
 alias x="xenv 14.5"
 alias m="export PATH=/opt/toolchain/modelsim/modelsim_dlx_10.0e/bin:${PATH}"
+alias gitclean="~/private/settings/scripts/gitclean.sh"
