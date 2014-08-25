@@ -11,6 +11,7 @@
 [diff]
 	renames = copies
 	guitool = meld
+	ignoreSubmodules = untracked
 [merge]
 	tool = meld4
 	conflictstyle = diff3
@@ -24,3 +25,4 @@
 	sub = !git submodule
 [core]
 	whitespace = -trailing-space
+	preloadindex = true
