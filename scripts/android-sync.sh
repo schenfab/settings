@@ -7,6 +7,9 @@ LOCAL_PATH='/home/fschenkel/Photos/Android/Camera/'
 # Get a list of files that don't exist locally
 DIFF=($(comm -23 --check-order <(adb shell ls ${ANDROID_PATH} | dos2unix | sort) <(\ls -1 ${LOCAL_PATH} | sort)))
 
+# Exit if list is empty
+[[ ${#DIFF[@]} -eq 0 ]] && echo "Found nothing to do..." && exit
+
 # Ask for confirmation
 printf '%s\n' "${DIFF[@]}"
 echo "Found ${#DIFF[@]} new files. Do you wish to continue?"
@@ -19,7 +22,6 @@ done
 
 # Transfer files
 CNT=0
-LEN=
 for FILE in "${DIFF[@]}"
 do
     ((CNT++))
