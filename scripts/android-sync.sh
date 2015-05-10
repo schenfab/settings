@@ -4,6 +4,12 @@
 ANDROID_PATH='/storage/sdcard1/DCIM/Camera/'
 LOCAL_PATH='/home/fschenkel/Photos/Android/Camera/'
 
+# Wait until a device is connected
+echo -n "Waiting for device... "
+adb wait-for-device > /dev/null
+[[ $? -ne 0 ]] && echo "No device could be found!" && exit
+echo "Device found!"
+
 # Get a list of files that don't exist locally
 DIFF=($(comm -23 --check-order <(adb shell ls ${ANDROID_PATH} | dos2unix | sort) <(\ls -1 ${LOCAL_PATH} | sort)))
 
