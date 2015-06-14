@@ -2,10 +2,10 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-source ~/settings/home/.bashrc_common
+source ~/repos/settings/home/.bashrc_common
 
 # Set email address to be used by git commit
 export EMAIL="fabian.schenkel@gmail.com"
 
 # Aliases for convenience
-alias gitclean="~/settings/scripts/gitclean.sh"
+alias gitclean="~/repos/settings/scripts/gitclean.sh"
