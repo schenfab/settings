@@ -9,3 +9,6 @@ export EMAIL="fabian.schenkel@gmail.com"
 
 # Aliases for convenience
 alias gitclean="~/repos/settings/scripts/gitclean.sh"
+
+# Wine should run in 32-bit mode
+export WINEARCH=win32
