@@ -16,7 +16,7 @@
 	tool = meld4
 	conflictstyle = diff3
 [mergetool "meld4"]
-	cmd = meld --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $BASE $REMOTE $MERGED
+	cmd = ~/tools/meld-1.6.1/bin/meld --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $BASE $REMOTE $MERGED
 [cola]
 	fontdiff = DejaVu Sans Mono,12,-1,5,50,0,0,0,0,0
 [alias]

@@ -15,8 +15,7 @@ fi
 export EMAIL="fabian.schenkel@scs.ch"
 
 # Add new paths
-export PATH=$PATH:"/opt/toolchain/codecomposer/ccs_5.1.1/ccsv5/eclipse/"
-export PATH=$PATH:"/usr/scs/fschenkel/sandbox/insight/bin"
+export PATH=$PATH:"/opt/toolchain/codecomposer/ccs_5.1.1/ccsv5/eclipse/":"/usr/scs/fschenkel/tools/feh-2.14/src:/usr/scs/fschenkel/tools/astyle/build/gcc/bin"
 
 # Prepare SSH-Agent
 SSHAGENT=/usr/bin/ssh-agent
@@ -25,11 +24,16 @@ if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
     eval `$SSHAGENT $SSHAGENTARGS` > /dev/null
     trap "kill $SSH_AGENT_PID" 0
 fi
+if [ -f /etc/profile.d/rvm.sh ];then
+  . /etc/profile.d/rvm.sh
+fi
 
 # Aliases for convenience
 alias s="ssh-add"
-alias tig="~/sandbox/tig-1.1/tig --all"
+alias tig="~/tools/tig-1.1/tig --all"
 function xenv { . /opt/toolchain/xilinx/Xilinx${1}i/settings64.sh && echo -en "\033]2;Xilinx ${1}\007"; }
-alias x="xenv 14.5"
+alias x="xenv 14.7"
 alias m="export PATH=/opt/toolchain/modelsim/modelsim_dlx_10.0e/bin:${PATH}"
+alias meld="/usr/scs/fschenkel/tools/meld-1.6.1/bin/meld"
 alias gitclean="~/private/settings/scripts/gitclean.sh"
+alias imagej="~/tools/ImageJ/ImageJ"
