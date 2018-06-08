@@ -1,18 +1,24 @@
 #!/bin/bash
 
-if [ -f ${HOME}/.sshagent-${HOSTNAME} ]; then
-  source ${HOME}/.sshagent-${HOSTNAME} > /dev/null
+FILET=${HOME}/.sshagent-${HOSTNAME}
+
+if [ -f ${FILET} ]; then
+  source ${FILET} > /dev/null
   echo -n "Found ssh-agent with PID=${SSH_AGENT_PID}..."
 else
-  /usr/bin/ssh-agent -s -t 10h > ${HOME}/.sshagent-${HOSTNAME}
-  source ${HOME}/.sshagent-${HOSTNAME} > /dev/null
+  /usr/bin/ssh-agent -s -t 10h > ${FILET}
+  source ${FILET} > /dev/null
   echo -n "Started ssh-agent with PID=${SSH_AGENT_PID}..."
 fi
 
 PROCESS_LINE=$(/bin/ps -u ${USER} | /bin/grep ${SSH_AGENT_PID} | /bin/grep -v grep)
 if [ -z "${PROCESS_LINE}" ]; then
   echo " But it seems dead."
-  rm -f ${HOME}/.sshagent-${HOSTNAME}
+  rm -f ${FILET}  
+  /usr/bin/ssh-agent -s -t 10h > ${FILET}
+  source ${FILET} > /dev/null
+  echo "Started ssh-agent with PID=${SSH_AGENT_PID}..."
+  ssh-add -t 5d
 else
   echo " And it seems still running."
   ALREADY_ADDED=$(ssh-add -l)
