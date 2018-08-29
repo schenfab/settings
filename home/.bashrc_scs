@@ -31,9 +31,6 @@ fi
 # Aliases for convenience
 alias s="ssh-add"
 alias tig="~/tools/tig-1.1/tig --all"
-function xenv { . /opt/toolchain/xilinx/Xilinx${1}i/settings64.sh && echo -en "\033]2;Xilinx ${1}\007"; }
-alias x="xenv 14.7"
-alias m="export PATH=/opt/toolchain/modelsim/modelsim_dlx_10.0e/bin:${PATH}"
 alias meld="/usr/scs/fschenkel/tools/meld-1.6.1/bin/meld"
 alias gitclean="~/private/settings/scripts/gitclean.sh"
 alias imagej="~/tools/ImageJ/ImageJ"
