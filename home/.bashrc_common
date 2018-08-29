@@ -58,6 +58,36 @@ function ep
     rm $TMP
 }
 
+# Function to share tmux sessions
+function start_shared_tmux
+{
+    if [ ! -z $TMUX ] ; then
+        echo "Already running in multiplexer!"
+        exit 1;
+    fi
+
+    tmux has-session -t main
+    if [ $? -eq 1 ] ; then
+        echo "No main here, starting it"
+        tmux new-session -s main\; set-option aggressive-resize on
+    else
+        highest=0
+        for session in $(tmux list-sessions)
+        do
+            if [[ $session =~ ^mirror([[:digit:]]+): ]] ; then
+                echo -n "Found mirror with number "
+                echo ${BASH_REMATCH[1]}
+                if [ ${BASH_REMATCH[1]} -gt ${highest} ] ; then
+                    highest=${BASH_REMATCH[1]};
+                fi
+            fi
+        done
+        let "newmirror = highest + 1";
+        echo "Attaching to mirror $newmirror"
+        tmux new-session -s mirror$newmirror -t main \; set-option destroy-unattached on\; set-option aggressive-resize on
+    fi
+}
+
 # Aliases for convenience
 alias ls='ls --color=auto'
 alias ll='ls -hl --time-style=long-iso'
@@ -78,6 +108,7 @@ alias uncolor="sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'"
 alias make="make -j $(grep -c processor /proc/cpuinfo)"
 alias ps="ps -eo pid,user:16,pcpu,pmem,stat,args"
 alias hg="history | grep"
+alias ts="start_shared_tmux"
 
 # 256 colors for terminal
 export TERM="xterm-256color"
