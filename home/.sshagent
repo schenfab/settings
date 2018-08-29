@@ -23,6 +23,6 @@ else
   echo " And it seems still running."
   ALREADY_ADDED=$(ssh-add -l)
   if [ "$ALREADY_ADDED" = "The agent has no identities." ]; then
-    ssh-add -t 5d
+    ssh-add -t 10h
   fi
 fi
