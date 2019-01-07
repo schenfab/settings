@@ -69,7 +69,7 @@ function start_shared_tmux
     tmux has-session -t main
     if [ $? -eq 1 ] ; then
         echo "No main here, starting it"
-        tmux new-session -s main\; set-option aggressive-resize on
+        tmux new-session -s main\; set-option aggressive-resize on\; set-option history-limit 50000
     else
         highest=0
         for session in $(tmux list-sessions)
@@ -84,7 +84,7 @@ function start_shared_tmux
         done
         let "newmirror = highest + 1";
         echo "Attaching to mirror $newmirror"
-        tmux new-session -s mirror$newmirror -t main \; set-option destroy-unattached on\; set-option aggressive-resize on
+        tmux new-session -s mirror$newmirror -t main \; set-option destroy-unattached on\; set-option aggressive-resize on\; set-option history-limit 50000
     fi
 }
 
