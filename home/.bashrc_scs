@@ -14,9 +14,6 @@ fi
 # Set email address to be used by git commit
 export EMAIL="fabian.schenkel@scs.ch"
 
-# Add new paths
-export PATH=$PATH:"/opt/toolchain/codecomposer/ccs_5.1.1/ccsv5/eclipse/":"/usr/scs/fschenkel/tools/feh-2.14/src:/usr/scs/fschenkel/tools/astyle/build/gcc/bin"
-
 # For ncurses ascii art in utf-8
 export NCURSES_NO_UTF8_ACS=1
 
