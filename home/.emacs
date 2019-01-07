@@ -7,6 +7,9 @@
 
 ;;; Reload file in place: M-x eval-buffer
 
+;;; Add additional load paths
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;;      DEFAULT VARIABLE SETTINGS
@@ -27,10 +30,12 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;(setq-default tab-width 2)
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
 ;(setq-default auto-save-interval 3000)
 (setq-default truncate-lines t)
 ;(setq-default truncate-lines false)
+(setq save-abbrevs nil)
 
 ;(display-time)
 (column-number-mode)
@@ -283,4 +288,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (eval-after-load "tex-mode" '(fset 'tex-font-lock-suscript 'ignore))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Use the dtrt-package for auto-detecting indent mode in C files
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-hook 'c-mode-common-hook
+  (lambda()
+    (require 'dtrt-indent)
+    (dtrt-indent-mode t)))
 
