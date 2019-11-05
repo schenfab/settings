@@ -229,13 +229,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- ;;'(backup-directory-alist (quote ((".*" . "~\\emacs_backups"))))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(c-basic-offset 2)
- '(c-default-style (quote ((c-mode . "ellemtel") (java-mode . "java") (awk-mode . "awk") (other . "ellemtel"))))
+ '(c-default-style
+   (quote
+    ((c-mode . "ellemtel")
+     (java-mode . "java")
+     (awk-mode . "awk")
+     (other . "ellemtel"))))
  '(global-font-lock-mode t nil (font-lock))
  '(load-home-init-file t t)
  '(make-backup-files nil)
@@ -245,7 +249,9 @@
  '(vhdl-clock-name "Clk")
  '(vhdl-clock-rising-edge t)
  '(vhdl-company-name "Supercomputing Systems AG")
- '(vhdl-file-header "-----------------------------------------------------------------------------
+ '(vhdl-electric-mode t)
+ '(vhdl-file-header
+   "-----------------------------------------------------------------------------
 --  Copyright (c) <year> <company>
 --  All rights reserved.
 -----------------------------------------------------------------------------
@@ -257,17 +263,27 @@
  '(vhdl-reset-active-high t)
  '(vhdl-reset-kind (quote none))
  '(vhdl-reset-name "Rst")
- '(vhdl-special-syntax-alist (quote (("signal-clr" "Clr[A-Za-z0-9_]*" "Tomato" "red5") ("signal-clock" "Clk[A-Za-z0-9_]*" "LimeGreen" "lightseagreen") ("signal-reset" "Rst[A-Za-z0-9_]*" "Tomato" "red3") ("type-definition" "\\<\\w+_[tT]\\>" "aquamarine3" "mediumaquamarine") ("record-definition" "\\<\\w+_[rR]\\>" "magenta2" "magenta2") ("constant" "\\<\\w+_[cC]\\>" "DodgerBlue3" "dodgerblue3") ("generic" "\\<\\w+_[gG]\\>" "DarkOrange" "darkorange") ("instance" "\\<[iI]_\\w+\\>" "Grey50" "gray30"))))
+ '(vhdl-special-syntax-alist
+   (quote
+    (("signal-clr" "Clr[A-Za-z0-9_]*" "Tomato" "red5")
+     ("signal-clock" "Clk[A-Za-z0-9_]*" "LimeGreen" "lightseagreen")
+     ("signal-reset" "Rst[A-Za-z0-9_]*" "Tomato" "red3")
+     ("type-definition" "\\<\\w+_[tT]\\>" "aquamarine3" "mediumaquamarine")
+     ("record-definition" "\\<\\w+_[rR]\\>" "magenta2" "magenta2")
+     ("constant" "\\<\\w+_[cC]\\>" "DodgerBlue3" "dodgerblue3")
+     ("generic" "\\<\\w+_[gG]\\>" "DarkOrange" "darkorange")
+     ("instance" "\\<[iI]_\\w+\\>" "Grey50" "gray30"))))
+ '(vhdl-stutter-mode t)
  '(vhdl-underscore-is-part-of-word t)
  '(vhdl-use-direct-instantiation (quote always)))
 
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(diff-added ((t (:foreground "Green"))) 'now)
- '(diff-removed ((t (:foreground "Red"))) 'now)
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(diff-added ((t (:foreground "Green"))))
+ '(diff-removed ((t (:foreground "Red"))))
  '(highlight-changes ((((min-colors 88) (class color)) (:background "yellow" :foreground "red1"))))
  '(highlight-changes-delete ((((min-colors 88) (class color)) (:background "yellow" :foreground "red1" :underline t))))
  '(linum ((t (:inherit (shadow default) :background "gainsboro" :foreground "grey60")))))
