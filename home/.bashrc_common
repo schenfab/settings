@@ -21,36 +21,6 @@ function ep
     rm $TMP
 }
 
-# Function to share tmux sessions
-function start_shared_tmux
-{
-    if [ ! -z $TMUX ] ; then
-        echo "Already running in multiplexer!"
-        exit 1;
-    fi
-
-    tmux has-session -t main
-    if [ $? -eq 1 ] ; then
-        echo "No main here, starting it"
-        tmux new-session -s main\; set-option aggressive-resize on\; set-option history-limit 50000
-    else
-        highest=0
-        for session in $(tmux list-sessions)
-        do
-            if [[ $session =~ ^mirror([[:digit:]]+): ]] ; then
-                echo -n "Found mirror with number "
-                echo ${BASH_REMATCH[1]}
-                if [ ${BASH_REMATCH[1]} -gt ${highest} ] ; then
-                    highest=${BASH_REMATCH[1]};
-                fi
-            fi
-        done
-        let "newmirror = highest + 1";
-        echo "Attaching to mirror $newmirror"
-        tmux new-session -s mirror$newmirror -t main \; set-option destroy-unattached on\; set-option aggressive-resize on\; set-option history-limit 50000
-    fi
-}
-
 # Function to update some environment variables within the session from values of the new shell
 function update_env_shared_tmux
 {
@@ -74,7 +44,7 @@ alias uncolor="sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'"
 alias make="make -j $(grep -c processor /proc/cpuinfo)"
 alias ps="ps -eo pid,user:16,pcpu,pmem,stat,args"
 alias hg="history | grep"
-alias ts="start_shared_tmux"
+alias ts="tmux new-session -t main \; set-option destroy-unattached on"
 alias te="update_env_shared_tmux"
 alias please='sudo $(fc -ln -1)'
 
