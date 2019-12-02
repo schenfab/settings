@@ -246,6 +246,7 @@
  '(vc-cvs-stay-local nil)
  '(vc-make-backup-files nil)
  '(version-control (quote never))
+ '(vhdl-clock-edge-condition (quote function))
  '(vhdl-clock-name "clk")
  '(vhdl-clock-rising-edge t)
  '(vhdl-company-name "Supercomputing Systems AG")
@@ -263,6 +264,7 @@
  '(vhdl-reset-active-high t)
  '(vhdl-reset-kind (quote none))
  '(vhdl-reset-name "rst")
+ '(vhdl-self-insert-comments nil)
  '(vhdl-special-syntax-alist
    (quote
     (("signal-clr" "[Cc]lr[A-Za-z0-9_]*" "Tomato" "red5")
