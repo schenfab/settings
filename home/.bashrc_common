@@ -30,6 +30,20 @@ function update_env_shared_tmux
     export "$(tmux show-env -t $SESSION | grep SSH_AUTH_SOCK)"
 }
 
+# Function to call the environment update functions in all tmux windows currently running bash
+function update_env_all_tmux_windows
+{
+    for WIN in $(tmux list-windows -F '#I')
+    do
+        TARGET=$(tmux display -p "#S"):$WIN
+        CURRENT_CMD=$(tmux list-panes -F '#{pane_current_command}' -t $TARGET)
+        if [ "${CURRENT_CMD}" == "bash" ]
+        then
+            tmux send-keys -t $TARGET update_env_shared_tmux C-m
+        fi
+    done
+}
+
 # Aliases for convenience
 alias ls='ls --color=auto'
 alias ll='ls -hl --time-style=long-iso'
@@ -47,6 +61,7 @@ alias ps="ps -eo pid,user:16,pcpu,pmem,stat,args"
 alias hg="history | grep"
 alias ts="tmux new-session -t main \; set-option destroy-unattached on"
 alias te="update_env_shared_tmux"
+alias tw="update_env_all_tmux_windows"
 alias please='sudo $(fc -ln -1)'
 
 # 256 colors for terminal
