@@ -246,6 +246,7 @@
  '(vc-cvs-stay-local nil)
  '(vc-make-backup-files nil)
  '(version-control (quote never))
+ '(vhdl-array-index-record-field-in-sensitivity-list nil)
  '(vhdl-clock-edge-condition (quote function))
  '(vhdl-clock-name "clk")
  '(vhdl-clock-rising-edge t)
