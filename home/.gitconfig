@@ -34,3 +34,5 @@
 	process = git-lfs filter-process
 [user]
 	name = Fabian Schenkel
+[pull]
+	rebase = true
