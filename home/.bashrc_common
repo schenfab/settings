@@ -24,7 +24,7 @@ function ep
 # Function to update some environment variables within the session from values of the new shell
 function update_env_shared_tmux
 {
-    SESSION=$(tmux list-clients -F '#S' | head -n 1)
+    SESSION=$(tmux display-message -p "#S")
     export "$(tmux show-env -t $SESSION | grep DISPLAY)"
     export "$(tmux show-env -t $SESSION | grep SSH_CONNECTION)"
     export "$(tmux show-env -t $SESSION | grep SSH_AUTH_SOCK)"
