@@ -32,21 +32,15 @@
 
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
-;(setq-default auto-save-interval 3000)
 (setq-default truncate-lines t)
-;(setq-default truncate-lines false)
 (setq save-abbrevs nil)
 
-;(display-time)
 (column-number-mode)
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (show-paren-mode 1)
-(set-background-color "black")
-(set-foreground-color "gray90")
-(set-cursor-color "red")
 
-(server-start)
+(load-theme 'tango-dark) ;(load-theme 'wombat)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -119,8 +113,8 @@
 (global-set-key "\M-u"         'undo)
 (global-set-key '[home]        'beginning-of-line)
 (global-set-key '[end]         'end-of-line)
-(global-set-key '[C-up]        'scroll-down-in-place)
-(global-set-key '[C-down]      'scroll-up-in-place)
+(global-set-key (kbd "ESC <up>") 'scroll-down-in-place)
+(global-set-key (kbd "ESC <down>") 'scroll-up-in-place)
 (global-set-key '[C-home]      'beginning-of-buffer)
 (global-set-key '[C-end]       'end-of-buffer)
 (global-set-key '[C-right]     'my-scroll-left);
