@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILET=${HOME}/.sshagent-${HOSTNAME}
+FILET=${HOME}/.ssh/agent-${HOSTNAME}
 
 if [ -f ${FILET} ]; then
   source ${FILET} > /dev/null
