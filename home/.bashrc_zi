@@ -1,0 +1,217 @@
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+test -s ~/.alias && . ~/.alias || true
+
+# don't put duplicate lines in the history. See bash(1) for more options
+export HISTCONTROL=ignoredups
+# ... and ignore same sucessive entries.
+export HISTCONTROL=ignoreboth
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
+
+if [ "$TERM" != "dumb" ]; then 
+   eval "`dircolors -b`"
+fi
+
+source ~/settings/home/.bashrc_common
+source ~/settings/home/.sshagent
+
+# Set email address to be used by git commit
+export EMAIL="fabian.schenkel@zhinst.com"
+
+# For ncurses ascii art in utf-8
+export NCURSES_NO_UTF8_ACS=1
+
+export ZISRC="$HOME/zi"
+export DEFAULT_BRANCH="hdl"
+
+function project() {
+  unset work
+
+  # Check for project name. If none given,
+  # have the user choose one.
+  if [[ -z $1 ]]; then
+    printf 'Please select a project:\n'
+    PROJECTS=`ls $ZISRC/git/$DEFAULT_BRANCH/`
+    OPTIONS="$PROJECTS Quit"
+
+    # Choose between projects
+      select opt in $OPTIONS; do
+        if [ "$opt" = "Quit" ]; then
+          unset work
+          break
+        else
+          # A project may have been selected
+          for i in $PROJECTS; do
+            # okay, we found the project, define
+            # the variables
+            if [ "$opt" = "$i" ]; then
+              project=$i
+              work=$ZISRC/git/$DEFAULT_BRANCH/$project
+              break
+            fi
+          done
+
+          # If the $work variable is not defined,
+          # it means the user has managed to select a wrong
+          # option, so we print a little message
+          if [[ -z $work ]]; then
+            printf 'Bad option selected! Hit enter to redisplay list.\n'
+          else
+            break
+          fi
+        fi
+      done
+    else
+      project=$1
+      if [[ -z $2 ]]; then
+          work=$ZISRC/git/hdl/$project
+      else
+          work=$ZISRC/git/$2/$project
+      fi
+  fi
+
+  # If work is not defined at this point, we simply exit
+  if [[ -n $work ]]; then
+    # Check that the project directory exists
+    if [[ ! -d $work ]]; then
+      printf "Project '%s' in directory '%s' does not exist!\n" $project $work
+    else
+      export work
+      # Try to source the project setup file
+      if [[ -e $work/scripts/setup.sh ]]; then
+        export ENV=$work/scripts/setup.sh
+        bash --posix
+      elif [[ -e $work/flow/setup.sh ]]; then
+        export ENV=$work/flow/setup.sh
+        bash --posix
+      else
+        printf "No setup.sh script found!\n"
+      fi
+    fi
+  fi
+}
+
+function run_fw() {
+    FILENAME=grimsel_firmware_${USER}_${RANDOM}
+    if scp grimsel_firmware root@${1}.zhinst.com:${FILENAME}; then
+        echo "scp worked..."
+        ssh root@${1}.zhinst.com "systemctl stop zi-firmware; killall -q grimsel_firmware; ./${FILENAME}; rm ${FILENAME}"
+    fi
+    echo "done"
+}
+
+function build_ziserver() {
+  if [[ -z $1 ]]; then
+    config=Release
+  else
+    config=$1
+  fi
+  make -C $ZISRC/git/products-labone/soft/ziServer_AsyncIOSocket/src/make -j8 PROJECT_TREE_HOME=$ZISRC/git/products-labone CONFIGURATION=$config PLATFORM=linux64
+}
+
+function start_ziserver() {
+  if [[ -z $1 ]]; then
+    config=Release
+  else
+    config=$1
+  fi
+  make_dir=$ZISRC/git/products-labone/soft/build-linux-x86_64-release/bin
+  (cd $make_dir; ./labone-data-server --open-override 1 --interface-usb 0 "${@:2}")
+}
+
+function build_zihttp() {
+  if [[ -z $1 ]]; then
+    config=Release
+  else
+    config=$1
+  fi
+  make -C $ZISRC/git/products-labone/soft/ziInterface/ziHttp/src/make -j8 PROJECT_TREE_HOME=$ZISRC/git/products-labone CONFIGURATION=$config PLATFORM=linux64 $1
+}
+
+function start_zihttp() {
+  if [[ -z $1 ]]; then
+    config=Release
+  else
+    config=$1
+  fi
+  make_dir=$ZISRC/git/products-labone/soft/build-linux-x86_64-release/bin
+  (cd $make_dir; ./labone-web-server -r ../../ziInterface/ziHttpCore/src/main/resources "${@:2}")
+}
+
+function build_zipython() {
+  make -C $ZISRC/git/products-labone/soft/ziInterface/ziPython/src/make -j8 PROJECT_TREE_HOME=$ZISRC/git/products-labone CONFIGURATION=Release PLATFORM=linux64 PYTHON_VERSION=37 "${@:1}"
+}
+
+function install_zipython() {
+  if [[ -z $1 ]]; then
+    project=$DEFAULT_BRANCH
+  else
+    project=$1
+  fi
+
+  source_dir=$ZISRC/git/products-labone/soft/ziInterface/ziPython/target/Release/linux64/
+  temp_dir=$HOME/tmp
+  target_dir=$HOME/.local/lib/python3.7/site-packages
+  wheel_file=`find $source_dir -name zhinst-*-cp37-cp37m-manylinux1_x86_64.whl | tail -n 1`
+  echo $wheel_file
+  pip install $wheel_file
+}
+
+function build_ziawg() {
+  if [[ -z $1 ]]; then
+    project=$DEFAULT_BRANCH
+  else
+    project=$1
+  fi
+
+  make -C $ZISRC/git/products-labone/soft/ziAWG/ziAWGCompiler/src/make -j8 PROJECT_TREE_HOME=$ZISRC/$DEFAULT_BRANCH/$project CONFIGURATION=Release PLATFORM=linux64
+}
+
+function bindiff() {
+  cmp -l $1 $2 | gawk '{printf "%08X %02X %02X\n", $1, strtonum(0$2), strtonum(0$3)}'
+}
+
+function xbindiff() {
+  basenamesrc=`basename $1`
+  basenamedst=`basename $2`
+  tmpsrc="/scratch/$USER/$basenamesrc.src.xxd"
+  echo $tmpsrc
+  tmpdst="/scratch/$USER/$basenamedst.dst.xxd"
+  echo $tmpdst
+  xxd $1 > $tmpsrc
+  xxd $2 > $tmpdst
+  #meld --diff $tmpsrc $tmpdst
+  tkdiff $tmpsrc $tmpdst; rm $tmpsrc $tmpdst
+}
+
+### Emacs beautify
+function beautify {
+    find $1 -type f -name "*$2*.vhd*" -print \
+    -exec bash -c 'emacs -batch -l ~/.emacs $1 -f vhdl-beautify-buffer' sh {} \;
+}
+
+alias bernina='project bernina'
+alias cervino='project cervino'
+alias hirzel='project hirzel'
+alias etzel='project etzel'
+alias klausen='project klausen'
+alias grimsel='project grimsel'
+alias hwmock='project hwmock'
+
+alias vivado='vivado -tempDir /scratch/fabians/vivado -nojournal -log /scratch/fabians/vivado/log'
+
+export CC=/usr/bin/gcc-7
+export CXX=/usr/bin/g++-7
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
