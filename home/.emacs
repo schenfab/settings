@@ -40,7 +40,12 @@
 (tool-bar-mode 0)
 (show-paren-mode 1)
 
+;; Choose a color theme that is nice for dark backgrounds
 (load-theme 'tango-dark) ;(load-theme 'wombat)
+
+;; Change some column widths in the electric buffer list
+(setq Buffer-menu-name-width 30)
+(setq Buffer-menu-mode-width 10)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -188,40 +193,6 @@
   (next-buffer)
   (other-window 1))
 
-;(defvar *color-mode* 'light)
-;(defun switch-colors ()
-;  (interactive)
-;  ;(if (equal *color-mode* 'light)
-;  ;  (
-;     (set-background-color "black")
-;     (set-foreground-color "gray90")
-;     (setq *color-mode* 'dark)
-;     '(linum ((t (:inherit (shadow default) :background "gray80" :foreground "grey60"))))
-;  ;   )
-;  ;  (
-;     (set-background-color "beige")
-;     (set-foreground-color "black")
-;     (setq *color-mode* 'light)
-;     '(linum ((t (:inherit (shadow default) :background "gainsboro" :foreground "grey60"))))
-;  ;  )
-;  ;  )
-;  )
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;;      VHDL Mode stuff when not correctly defined
-;;;      in the start-site-local.el
-;;;
-;;;      problems:
-;;;      emacs 21.2 uses beta mode VHDL mode
-;;;      vhdl-compiler-alist has changed for newer VHDL modes
-;;;      emacs 21.3 has (had) wrong site-start-local file
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; for the emacs 21.3
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -240,39 +211,37 @@
  '(vc-cvs-stay-local nil)
  '(vc-make-backup-files nil)
  '(version-control (quote never))
- '(vhdl-array-index-record-field-in-sensitivity-list nil)
- '(vhdl-clock-edge-condition (quote function))
+ '(vhdl-electric-mode t)
+ '(vhdl-stutter-mode t)
  '(vhdl-clock-name "clk")
  '(vhdl-clock-rising-edge t)
- '(vhdl-company-name "Supercomputing Systems AG")
- '(vhdl-electric-mode t)
- '(vhdl-file-header
-   "-----------------------------------------------------------------------------
---  Copyright (c) <year> <company>
---  All rights reserved.
------------------------------------------------------------------------------
-")
- '(vhdl-highlight-case-sensitive t)
- '(vhdl-highlight-special-words t)
- '(vhdl-instance-name (quote (".*" . "inst_\\&")))
- '(vhdl-optional-labels (quote none))
+ '(vhdl-clock-edge-condition (quote function))
+ '(vhdl-reset-name "rst_i")
  '(vhdl-reset-active-high t)
  '(vhdl-reset-kind (quote none))
- '(vhdl-reset-name "rst")
+ '(vhdl-optional-labels (quote none))
  '(vhdl-self-insert-comments nil)
+ '(vhdl-array-index-record-field-in-sensitivity-list nil)
+ '(vhdl-instance-name (quote (".*" . "i_\\&")))
+ '(vhdl-use-direct-instantiation (quote always))
+ '(vhdl-underscore-is-part-of-word t)
+ '(vhdl-highlight-special-words t)
+ '(vhdl-highlight-case-sensitive t)
  '(vhdl-special-syntax-alist
-   (quote
-    (("signal-clr" "[Cc]lr[A-Za-z0-9_]*" "Tomato" "red5")
+   (quote (
+     ;;("port-input" "[A-Za-z0-9_]+_i" "lightblue" "lightblue")
      ("signal-clock" "[Cc]lk[A-Za-z0-9_]*" "LimeGreen" "lightseagreen")
+     ("signal-clr" "[Cc]lr[A-Za-z0-9_]*" "Tomato" "red5")
      ("signal-reset" "[Rr]st[A-Za-z0-9_]*" "Tomato" "red3")
      ("type-definition" "\\<[ta]_\\w+\\>" "aquamarine3" "mediumaquamarine")
      ("record-definition" "\\<r_\\w+\\>" "magenta2" "magenta2")
      ("constant" "\\<C_\\w+\\>" "DodgerBlue3" "dodgerblue3")
      ("generic" "\\<G_\\w+\\>" "DarkOrange" "darkorange")
-     ("instance" "\\<inst_\\w+\\>" "Grey50" "gray30"))))
- '(vhdl-stutter-mode t)
- '(vhdl-underscore-is-part-of-word t)
- '(vhdl-use-direct-instantiation (quote always)))
+     ;;("config-width" "\\<\\w+\\_W\\>" "DodgerBlue3" "dodgerblue3")
+     ;;("config-count" "\\<\\w+\\_C\\>" "DarkOrange" "darkorange")
+     ("instance" "\\<i_\\w+\\>" "Grey50" "gray30")
+     )))
+ )
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
