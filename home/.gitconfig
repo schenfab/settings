@@ -36,3 +36,5 @@
 	name = Fabian Schenkel
 [pull]
 	rebase = true
+[pager]
+	branch = false
