@@ -44,11 +44,16 @@ function update_env_all_tmux_windows
     done
 }
 
+function journalctl_last
+{
+    journalctl _SYSTEMD_INVOCATION_ID=$(systemctl show -p InvocationID --value "$1")
+}
+
 # Aliases for convenience
 alias ls='ls --color=auto'
 alias ll='ls -hl --time-style=long-iso'
 alias grep='grep --color=auto'
-alias e="emacs -nw"
+alias e="LD_LIBRARY_PATH= emacs -nw"
 alias emasc="emacs"
 alias tig="tig --all"
 alias gitk="gitk --all"
@@ -56,7 +61,7 @@ alias log="tail --retry --follow=name"
 alias tree="tree -C"
 alias gdiff="git diff --no-index"
 alias uncolor="sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'"
-alias make="make -j $(grep -c processor /proc/cpuinfo)"
+alias make="colormake -j $(grep -c processor /proc/cpuinfo)"
 alias ps="ps -eo pid,user:16,pcpu,pmem,stat,args"
 alias hg="history | grep"
 alias ts="DISPLAY=:17 tmux new-session -t main \; set-option destroy-unattached on"
@@ -68,8 +73,8 @@ alias please='sudo $(fc -ln -1)'
 export TERM="xterm-256color"
 
 # Some other variables
-export EDITOR="emacs -nw"
-export LESS="-iR"
+export EDITOR="LD_LIBRARY_PATH= emacs -nw"
+export LESS="-iRS"
 
 # Smart bash completion
 if [ -f /etc/bash_completion ]; then
