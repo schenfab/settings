@@ -1,28 +1,39 @@
 #!/bin/bash
 
-FILET=${HOME}/.ssh/agent-${HOSTNAME}
-
-if [ -f ${FILET} ]; then
-  source ${FILET} > /dev/null
-  echo -n "Found ssh-agent with PID=${SSH_AGENT_PID}..."
-else
-  /usr/bin/ssh-agent -s -t 10h > ${FILET}
-  source ${FILET} > /dev/null
+function start_agent () {
+  /usr/bin/ssh-agent -s -t 10h > $1
+  chmod 600 "$1"
+  source $1 > /dev/null
   echo -n "Started ssh-agent with PID=${SSH_AGENT_PID}..."
-fi
+}
 
-PROCESS_LINE=$(/bin/ps -u ${USER} | /bin/grep ${SSH_AGENT_PID} | /bin/grep -v grep)
-if [ -z "${PROCESS_LINE}" ]; then
-  echo " But it seems dead."
-  rm -f ${FILET}  
-  /usr/bin/ssh-agent -s -t 10h > ${FILET}
-  source ${FILET} > /dev/null
-  echo "Started ssh-agent with PID=${SSH_AGENT_PID}..."
-  ssh-add -t 5d
+# First, detect whether there is a forwarded agent.
+# This is indicated by the presence of the "SSH_AUTH_SOCK" environment variable.
+if [ ! -z "$SSH_AUTH_SOCK" ]; then
+  # Found a forwarded SSH agent socket
+  echo "Detected forwarded SSH Agent, SSH_AUTH_SOCK: $SSH_AUTH_SOCK"
 else
-  echo " And it seems still running."
+  # Look for a local SSH agent
+  FILET=${HOME}/.ssh/agent-${HOSTNAME}
+
+  if [ -f ${FILET} ]; then
+    source ${FILET} > /dev/null
+    echo -n "Found ssh-agent with PID=${SSH_AGENT_PID}..."
+  else
+    start_agent ${FILET}
+  fi
+
+  PROCESS_LINE=$(/bin/ps -u ${USER} | /bin/grep ${SSH_AGENT_PID} | /bin/grep -v grep)
+  if [ -z "${PROCESS_LINE}" ]; then
+    echo " But it seems dead."
+    rm -f ${FILET}
+    start_agent ${FILET}
+  fi
+
+  # check if a key is already added to the agent
   ALREADY_ADDED=$(ssh-add -l)
   if [ "$ALREADY_ADDED" = "The agent has no identities." ]; then
     ssh-add -t 10h
   fi
+
 fi
