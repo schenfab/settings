@@ -59,7 +59,7 @@ alias uncolor="sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'"
 alias make="make -j $(grep -c processor /proc/cpuinfo)"
 alias ps="ps -eo pid,user:16,pcpu,pmem,stat,args"
 alias hg="history | grep"
-alias ts="tmux new-session -t main \; set-option destroy-unattached on"
+alias ts="DISPLAY=:17 tmux new-session -t main \; set-option destroy-unattached on"
 alias te="update_env_shared_tmux"
 alias tw="update_env_all_tmux_windows"
 alias please='sudo $(fc -ln -1)'
