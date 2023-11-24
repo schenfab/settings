@@ -72,7 +72,7 @@
     (if (boundp 'highlight-changes-mode)
       (highlight-changes-remove-highlight (point-min) (point-max)))))
 
-(set-default-font "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-15")
+;;(set-default-font "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-15")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -210,38 +210,36 @@
  '(make-backup-files nil)
  '(vc-cvs-stay-local nil)
  '(vc-make-backup-files nil)
+ '(verilog-indent-level 2)
+ '(verilog-indent-level-behavioral 2)
+ '(verilog-indent-level-declaration 2)
+ '(verilog-indent-level-module 2)
  '(version-control (quote never))
- '(vhdl-electric-mode t)
- '(vhdl-stutter-mode t)
+ '(vhdl-array-index-record-field-in-sensitivity-list nil)
+ '(vhdl-clock-edge-condition (quote function))
  '(vhdl-clock-name "clk")
  '(vhdl-clock-rising-edge t)
- '(vhdl-clock-edge-condition (quote function))
- '(vhdl-reset-name "rst_i")
+ '(vhdl-electric-mode t)
+ '(vhdl-highlight-case-sensitive t)
+ '(vhdl-highlight-special-words t)
+ '(vhdl-instance-name (quote (".*" . "i_\\&")))
+ '(vhdl-optional-labels (quote process))
  '(vhdl-reset-active-high t)
  '(vhdl-reset-kind (quote none))
- '(vhdl-optional-labels (quote none))
+ '(vhdl-reset-name "rst_i")
  '(vhdl-self-insert-comments nil)
- '(vhdl-array-index-record-field-in-sensitivity-list nil)
- '(vhdl-instance-name (quote (".*" . "i_\\&")))
- '(vhdl-use-direct-instantiation (quote always))
- '(vhdl-underscore-is-part-of-word t)
- '(vhdl-highlight-special-words t)
- '(vhdl-highlight-case-sensitive t)
  '(vhdl-special-syntax-alist
-   (quote (
-     ;;("port-input" "[A-Za-z0-9_]+_i" "lightblue" "lightblue")
-     ("signal-clock" "[Cc]lk[A-Za-z0-9_]*" "LimeGreen" "lightseagreen")
+   (quote
+    (("signal-clock" "[Cc]lk[A-Za-z0-9_]*" "LimeGreen" "lightseagreen")
      ("signal-clr" "[Cc]lr[A-Za-z0-9_]*" "Tomato" "red5")
      ("signal-reset" "[Rr]st[A-Za-z0-9_]*" "Tomato" "red3")
      ("type-definition" "\\<[ta]_\\w+\\>" "aquamarine3" "mediumaquamarine")
      ("record-definition" "\\<r_\\w+\\>" "magenta2" "magenta2")
      ("constant" "\\<C_\\w+\\>" "DodgerBlue3" "dodgerblue3")
      ("generic" "\\<G_\\w+\\>" "DarkOrange" "darkorange")
-     ;;("config-width" "\\<\\w+\\_W\\>" "DodgerBlue3" "dodgerblue3")
-     ;;("config-count" "\\<\\w+\\_C\\>" "DarkOrange" "darkorange")
-     ("instance" "\\<i_\\w+\\>" "Grey50" "gray30")
-     )))
- )
+     ("instance" "\\<i_\\w+\\>" "Grey50" "gray30"))))
+ '(vhdl-stutter-mode t)
+ '(vhdl-underscore-is-part-of-word t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -255,9 +253,10 @@
  '(linum ((t (:inherit (shadow default) :background "gainsboro" :foreground "grey60")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Highlight SCS naming conventions
+;;; Setup clang format checker
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+(require 'clang-format nil t)
+(setq clang-format-style "file")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Include line nr package and show by default
@@ -268,7 +267,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; TeX mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+;;(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (eval-after-load "tex-mode" '(fset 'tex-font-lock-suscript 'ignore))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -279,3 +278,20 @@
     (require 'dtrt-indent)
     (dtrt-indent-mode t)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Use the blacken code formatter for Python files
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;(add-hook 'python-mode-hook
+;;  (lambda()
+;;    (require 'blacken)
+;;    (blacken-mode)))
+
+(add-hook 'python-mode-hook
+  (lambda()
+    (require 'blacken)
+    (if (yes-or-no-p "Do you want to use blacken? ") (blacken-mode))
+    ))
+
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
