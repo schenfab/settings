@@ -38,11 +38,17 @@ function project() {
   # Check for project name. If none given,
   # have the user choose one.
   if [[ -z $1 ]]; then
-    printf 'Please select a project:\n'
-    PROJECTS=`ls $ZISRC/git/$DEFAULT_BRANCH/`
-    OPTIONS="$PROJECTS Quit"
 
-    # Choose between projects
+    # If called within a valid project structure, just use the current folder
+    if [[ -f scripts/setup.sh ]]; then
+      work=$(pwd)
+    
+    else
+      printf 'Please select a project:\n'
+      PROJECTS=`ls $ZISRC/git/$DEFAULT_BRANCH/`
+      OPTIONS="$PROJECTS Quit"
+
+      # Choose between projects
       select opt in $OPTIONS; do
         if [ "$opt" = "Quit" ]; then
           unset work
@@ -69,13 +75,14 @@ function project() {
           fi
         fi
       done
+    fi
+  else
+    project=$1
+    if [[ -z $2 ]]; then
+        work=$ZISRC/git/hdl/$project
     else
-      project=$1
-      if [[ -z $2 ]]; then
-          work=$ZISRC/git/hdl/$project
-      else
-          work=$ZISRC/git/$2/$project
-      fi
+        work=$ZISRC/git/$2/$project
+    fi
   fi
 
   # If work is not defined at this point, we simply exit
@@ -87,11 +94,15 @@ function project() {
       export work
       # Try to source the project setup file
       if [[ -e $work/scripts/setup.sh ]]; then
-        export ENV=$work/scripts/setup.sh
-        bash --posix
+        #export ENV=$work/scripts/setup.sh
+        #bash --posix
+        source $work/scripts/setup.sh
+        cd $work
       elif [[ -e $work/flow/setup.sh ]]; then
-        export ENV=$work/flow/setup.sh
-        bash --posix
+        #export ENV=$work/flow/setup.sh
+        #bash --posix
+        source $work/flow/setup.sh
+        cd $work
       else
         printf "No setup.sh script found!\n"
       fi
@@ -100,10 +111,11 @@ function project() {
 }
 
 function run_fw() {
-    FILENAME=grimsel_firmware_${USER}_${RANDOM}
-    if scp grimsel_firmware root@${1}.zhinst.com:${FILENAME}; then
+    FILENAME=grimsel_firmware_${USER}
+    if scp ${1} root@${2}.zhinst.com:${FILENAME}; then
         echo "scp worked..."
-        ssh root@${1}.zhinst.com "systemctl stop zi-firmware; killall -q grimsel_firmware; ./${FILENAME}; rm ${FILENAME}"
+        ssh root@${2}.zhinst.com "systemctl stop zi-firmware; killall -q grimsel_firmware; killall -q ${FILENAME}; ./${FILENAME}"
+        ssh root@${2}.zhinst.com "killall -q ${FILENAME}; rm ${FILENAME}"
     fi
     echo "done"
 }
