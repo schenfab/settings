@@ -12,6 +12,10 @@
 	renames = copies
 	guitool = meld
 	ignoreSubmodules = untracked
+[diff "zip"]
+      textconv = unzip -v
+[diff "gz"]
+      textconv = gunzip -l
 [merge]
 	tool = meld4
 	conflictstyle = diff3
@@ -23,7 +27,6 @@
 [alias]
 	logk = log --graph --full-history --all --color --pretty=format:'%x1b[31m%h%x09%x1b[32m %C(white)- %C(yellow)%d%C(white)%x1b[0m%x20%s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --date=relative
 	diffword = diff --word-diff=color --word-diff-regex='[A-z_]+|[^[:space:]]'
-	sub = !git submodule
 [core]
 	whitespace = -trailing-space
 	preloadindex = true
